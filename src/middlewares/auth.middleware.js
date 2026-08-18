@@ -11,7 +11,7 @@ export const verifyJWT = asyncHandler(async(req, _, next) => {
         if (!token) {
             throw new ApiError(401, "Unauthorized request")
         }
-    
+        // verify method will check all things signature, validity and extract details 
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
@@ -20,11 +20,11 @@ export const verifyJWT = asyncHandler(async(req, _, next) => {
             
             throw new ApiError(401, "Invalid Access Token")
         }
-    
+        // request mai user data add kardo
         req.user = user;
         next()
     } catch (error) {
-        throw new ApiError(401, error?.message || "Invalid access token")
+        throw new ApiError(401, error?.message || "Invalid access token") // Token Expired hai 
     }
     
 })

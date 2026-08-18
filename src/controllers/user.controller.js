@@ -113,14 +113,13 @@ const loginUser = asyncHandler(async (req, res) => {
     //password check
     //access and referesh token
     //send cookie
-
     const { email, username, password } = req.body;
-    console.log(email);
-
+    // console.log(email);
+    // console.log(username);
     if (!username && !email) {
         throw new ApiError(400, "username or email is required");
     }
-
+     
     // Here is an alternative of above code based on logic discussed in video:
     // if (!(username || email)) {
     //     throw new ApiError(400, "username or email is required")
@@ -130,7 +129,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({
         $or: [{ username }, { email }],
     });
-    console.log(user);
+    // console.log(user);
     if (!user) {
         throw new ApiError(404, "User does not exist");
     }
@@ -225,17 +224,19 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             secure: true,
         };
 
-        const { accessToken, newRefreshToken } =
+        const { accessToken, RefreshToken } =
             await generateAccessAndRefereshTokens(user._id);
 
         return res
             .status(200)
             .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", newRefreshToken, options)
+            .cookie("refreshToken", RefreshToken, options)
             .json(
                 new ApiResponse(
                     200,
-                    { accessToken, refreshToken: newRefreshToken },
+                    { accessToken,
+                      refreshToken: RefreshToken,
+                    },
                     "Access token refreshed"
                 )
             );

@@ -8,11 +8,11 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     const {videoId} = req.params
     //TODO: toggle like on video
     try {
-        existLike = await Like.findOne({video: videoId, likedBy: req.user._id})
+        const existLike = await Like.findOne({video: videoId, likedBy: req.user._id})
         if (existLike) {
             await Like.deleteOne({video: videoId, likedBy: req.user._id})
         } else {
-            const like = Like.create({
+            const like = await Like.create({
                 video: videoId,
                 likedBy: req.user._id
             })
@@ -27,11 +27,11 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     const {commentId} = req.params
     //TODO: toggle like on comment
         try {
-        existLike = await Like.findOne({comment: commentId, likedBy: req.user._id})
+        const existLike = await Like.findOne({comment: commentId, likedBy: req.user._id})
         if (existLike) {
             await Like.deleteOne({comment: commentId, likedBy: req.user._id})
         } else {
-            const like = Like.create({
+            const like = await Like.create({
                 comment: commentId,
                 likedBy: req.user._id
             })
@@ -47,11 +47,11 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
     const {tweetId} = req.params
     //TODO: toggle like on tweet
         try {
-        existLike = await Like.findOne({tweet: tweetId, likedBy: req.user._id})
+        const existLike = await Like.findOne({tweet: tweetId, likedBy: req.user._id})
         if (existLike) {
             await Like.deleteOne({tweet: tweetId, likedBy: req.user._id})
         } else {
-            const like = Like.create({
+            const like = await Like.create({
                 tweet: tweetId,
                 likedBy: req.user._id
             })

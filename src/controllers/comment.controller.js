@@ -73,7 +73,10 @@ const updateComment = asyncHandler(async (req, res) => {
         }
 
         if (comment.commentedBy.toString() !== req.user._id.toString()) {
-            throw new ApiError(403, "You are not authorized to update this comment");
+            throw new ApiError(
+                403,
+                "You are not authorized to update this comment"
+            );
         }
 
         comment.content = content;
@@ -81,7 +84,9 @@ const updateComment = asyncHandler(async (req, res) => {
 
         return res
             .status(200)
-            .json(new ApiResponse(200, comment, "Comment updated successfully"));
+            .json(
+                new ApiResponse(200, comment, "Comment updated successfully")
+            );
     } catch (error) {
         throw new ApiError(500, "Error while updating comment");
     }
@@ -98,7 +103,10 @@ const deleteComment = asyncHandler(async (req, res) => {
         }
 
         if (comment.commentedBy.toString() !== req.user._id.toString()) {
-            throw new ApiError(403, "You are not authorized to delete this comment");
+            throw new ApiError(
+                403,
+                "You are not authorized to delete this comment"
+            );
         }
 
         await Comment.findByIdAndDelete(commentId);

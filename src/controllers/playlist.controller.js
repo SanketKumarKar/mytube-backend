@@ -1,4 +1,4 @@
-import mongoose, { isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 import { Playlist } from "../models/playlist.model.js";
 import { Video } from "../models/video.model.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -34,6 +34,10 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
     const { userId } = req.params;
+    const isValidUserId = isValidObjectId(userId);
+    if (!isValidUserId) {
+        throw new ApiError(400, "Invalid user ID");
+    }
     //TODO: get user playlists
     try {
         const playlists = await Playlist.find({ owner: userId });
@@ -64,6 +68,10 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 
 const getPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
+    const isValidPlaylistId = isValidObjectId(playlistId);
+    if (!isValidPlaylistId) {
+        throw new ApiError(400, "Invalid playlist ID");
+    }
     //TODO: get playlist by id
     try {
         const playlist = await Playlist.findById(playlistId);
@@ -82,6 +90,14 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
+    const isValidPlaylistId = isValidObjectId(playlistId);
+    const isValidVideoId = isValidObjectId(videoId);
+    if (!isValidPlaylistId) {
+        throw new ApiError(400, "Invalid playlist ID");
+    }
+    if (!isValidVideoId) {
+        throw new ApiError(400, "Invalid video ID");
+    }
     // TODO: add video to playlist
     try {
         const playlist = await Playlist.findById(playlistId);
@@ -119,6 +135,14 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
 
 const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const { playlistId, videoId } = req.params;
+    const isValidPlaylistId = isValidObjectId(playlistId);
+    const isValidVideoId = isValidObjectId(videoId);
+    if (!isValidPlaylistId) {
+        throw new ApiError(400, "Invalid playlist ID");
+    }
+    if (!isValidVideoId) {
+        throw new ApiError(400, "Invalid video ID");
+    }
     // TODO: remove video from playlist
     try {
         const playlist = await Playlist.findById(playlistId);
@@ -149,6 +173,10 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
 
 const deletePlaylist = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
+    const isValidPlaylistId = isValidObjectId(playlistId);
+    if (!isValidPlaylistId) {
+        throw new ApiError(400, "Invalid playlist ID");
+    }
     // TODO: delete playlist
     try {
         const playlist = await Playlist.findById(playlistId);
@@ -167,6 +195,10 @@ const deletePlaylist = asyncHandler(async (req, res) => {
 const updatePlaylist = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
     const { name, description } = req.body;
+    const isValidPlaylistId = isValidObjectId(playlistId);
+    if (!isValidPlaylistId) {
+        throw new ApiError(400, "Invalid playlist ID");
+    }
     //TODO: update playlist
     try {
         const playlist = await Playlist.findById(playlistId);

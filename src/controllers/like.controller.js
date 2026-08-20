@@ -7,6 +7,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const toggleVideoLike = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     //TODO: toggle like on video
+    const isValidVideoId = isValidObjectId(videoId);
+    if (!isValidVideoId) {
+        throw new ApiError(400, "Invalid video ID");
+    }
     try {
         const existLike = await Like.findOne({
             video: videoId,
@@ -28,6 +32,10 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 const toggleCommentLike = asyncHandler(async (req, res) => {
     const { commentId } = req.params;
     //TODO: toggle like on comment
+    const isValidCommentId = isValidObjectId(commentId);
+    if (!isValidCommentId) {
+        throw new ApiError(400, "Invalid comment ID");
+    }
     try {
         const existLike = await Like.findOne({
             comment: commentId,
@@ -52,6 +60,10 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
 const toggleTweetLike = asyncHandler(async (req, res) => {
     const { tweetId } = req.params;
     //TODO: toggle like on tweet
+    const isValidTweetId = isValidObjectId(tweetId);
+    if (!isValidTweetId) {
+        throw new ApiError(400, "Invalid tweet ID");
+    }
     try {
         const existLike = await Like.findOne({
             tweet: tweetId,
@@ -107,7 +119,10 @@ const getLikedVideos = asyncHandler(async (req, res) => {
 
 const getCommentLikes = asyncHandler(async (req, res) => {
     const { commentId } = req.params;
-
+    const isValidCommentId = isValidObjectId(commentId);
+    if (!isValidCommentId) {
+        throw new ApiError(400, "Invalid comment ID");
+    }
     try {
         const commentLikes = await Like.countDocuments({ comment: commentId });
 
@@ -125,6 +140,10 @@ const getCommentLikes = asyncHandler(async (req, res) => {
 
 const getTweetLikes = asyncHandler(async (req, res) => {
     const { tweetId } = req.params;
+    const isValidTweetId = isValidObjectId(tweetId);
+    if (!isValidTweetId) {
+        throw new ApiError(400, "Invalid tweet ID");
+    }
     try {
         const tweetLikes = await Like.countDocuments({ tweet: tweetId });
         res.status(200).json(
@@ -141,6 +160,10 @@ const getTweetLikes = asyncHandler(async (req, res) => {
 
 const getVideoLikes = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
+    const isValidVideoId = isValidObjectId(videoId);
+    if (!isValidVideoId) {
+        throw new ApiError(400, "Invalid video ID");
+    }
     try {
         const videoLikes = await Like.countDocuments({ video: videoId });
         res.status(200).json(

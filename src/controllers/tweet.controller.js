@@ -9,11 +9,17 @@ const createTweet = asyncHandler(async (req, res) => {
     //TODO: create tweet
     const { content } = req.body;
     const userId = req.user._id;
-
+    const isValidUserId = isValidObjectId(userId);
+    if (!isValidUserId) {
+        throw new ApiError(400, "Invalid user ID");
+    }
     if (!content) {
         throw new ApiError(400, "Content is required");
     }
-
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
     try {
         const tweet = await Tweet.create({
             content,
@@ -30,6 +36,10 @@ const createTweet = asyncHandler(async (req, res) => {
 const getUserTweets = asyncHandler(async (req, res) => {
     // TODO: get user tweets
     const { userId } = req.params;
+    const isValidUserId = isValidObjectId(userId);
+    if (!isValidUserId) {
+        throw new ApiError(400, "Invalid user ID");
+    }
     try {
         const tweets = await Tweet.find({ owner: userId }); // Fetch tweets for the authenticated user
         if (tweets.length === 0) {
@@ -54,6 +64,10 @@ const updateTweet = asyncHandler(async (req, res) => {
     //TODO: update tweet
     const { content } = req.body;
     const { tweetId } = req.params;
+    const isValidTweetId = isValidObjectId(tweetId);
+    if (!isValidTweetId) {
+        throw new ApiError(400, "Invalid tweet ID");
+    }
 
     try {
         const tweet = await Tweet.findById(tweetId);
@@ -86,6 +100,10 @@ const updateTweet = asyncHandler(async (req, res) => {
 const deleteTweet = asyncHandler(async (req, res) => {
     //TODO: delete tweet
     const { tweetId } = req.params;
+    const isValidTweetId = isValidObjectId(tweetId);
+    if (!isValidTweetId) {
+        throw new ApiError(400, "Invalid tweet ID");
+    }
     try {
         const tweet = await Tweet.findById(tweetId);
         if (!tweet) {
